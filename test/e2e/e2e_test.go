@@ -27,7 +27,7 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
-	"cr.undercloud/nova-custom-operator/test/utils"
+	"undercloud.kr/nova-custom-operator/test/utils"
 )
 
 // namespace where the project is deployed in

@@ -1,4 +1,4 @@
-module cr.undercloud/nova-custom-operator
+module undercloud.kr/nova-custom-operator
 
 go 1.22.0
 

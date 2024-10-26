@@ -2,9 +2,9 @@
 # This file is used to track the info used to scaffold your project
 # and allow the plugins properly work.
 # More info: https://book.kubebuilder.io/reference/project-config.html
-domain: cr.undercloud
+domain: undercloud.kr
 layout:
 - go.kubebuilder.io/v4
 projectName: nova-custom-operator
-repo: cr.undercloud/nova-custom-operator
+repo: undercloud.kr/nova-custom-operator
 version: "3"
