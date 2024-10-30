@@ -1,0 +1,9 @@
+apiVersion: cr.undercloud.kr/v1
+kind: VirtualMachineHost
+metadata:
+  labels:
+    app.kubernetes.io/name: nova-custom-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: virtualmachinehost-sample
+spec:
+  # TODO(user): Add fields here

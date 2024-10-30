@@ -7,4 +7,14 @@ layout:
 - go.kubebuilder.io/v4
 projectName: nova-custom-operator
 repo: undercloud.kr/nova-custom-operator
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: undercloud.kr
+  group: cr
+  kind: VirtualMachineHost
+  path: undercloud.kr/nova-custom-operator/api/v1
+  version: v1
 version: "3"

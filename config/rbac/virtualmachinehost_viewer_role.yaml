@@ -1,0 +1,23 @@
+# permissions for end users to view virtualmachinehosts.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: nova-custom-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: virtualmachinehost-viewer-role
+rules:
+- apiGroups:
+  - cr.undercloud.kr
+  resources:
+  - virtualmachinehosts
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - cr.undercloud.kr
+  resources:
+  - virtualmachinehosts/status
+  verbs:
+  - get

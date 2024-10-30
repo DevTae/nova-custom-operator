@@ -1,0 +1,4 @@
+## Append samples of your project ##
+resources:
+- cr_v1_virtualmachinehost.yaml
+# +kubebuilder:scaffold:manifestskustomizesamples
