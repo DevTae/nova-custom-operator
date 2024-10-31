@@ -25,12 +25,23 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
 	crv1 "undercloud.kr/nova-custom-operator/api/v1"
+
+	"net/http"
+	"io/ioutil"
+	"encoding/json"
 )
 
 // VirtualMachineHostReconciler reconciles a VirtualMachineHost object
 type VirtualMachineHostReconciler struct {
 	client.Client
 	Scheme *runtime.Scheme
+	prev_status string // added
+}
+
+// instance status struct
+type Node struct {
+	Time	string	`json:"time"`
+	State	string	`json:"state"`
 }
 
 // +kubebuilder:rbac:groups=cr.undercloud.kr,resources=virtualmachinehosts,verbs=get;list;watch;create;update;patch;delete
@@ -49,9 +60,38 @@ type VirtualMachineHostReconciler struct {
 func (r *VirtualMachineHostReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	_ = log.FromContext(ctx)
 
-	// TODO(user): your logic here
+	url := "http://127.0.0.1:8000/v1/nodes"
+	resp, err := http.Get(url)
+	if err != nil {
+		log.Fatalf("Failed to send request: %v", err)
+	}
+	defer resp.Body.Close()
 
-	return ctrl.Result{}, nil
+	if resp.StatusCode != http.StatusOK {
+		log.Fatalf("Request failed with status code: %d", resp.StatusCode)
+	}
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatalf("Failed to read response body: %v", err)
+	}
+
+	var node Node // for single instance
+	if err := json.Unmarshal(body, &node); err != nil {
+		log.Fatalf("Failed to unmarshal JSON response: %v", err)
+	}
+
+	now_status := node.State
+
+	if now_status != r.prev_status {
+		log.Printf("Successful to find converted status into: %v", now_status)
+	}
+
+	// something logic (ex. re-inspection, re-scrap, and so on)
+
+	r.prev_status = now_status
+
+	return ctrl.Result{RequeueAfter: time.Second}, nil
 }
 
 // SetupWithManager sets up the controller with the Manager.
