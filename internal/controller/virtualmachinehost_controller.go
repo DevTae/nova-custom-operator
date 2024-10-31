@@ -26,10 +26,10 @@ import (
 
 	crv1 "undercloud.kr/nova-custom-operator/api/v1"
 
-	"time"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"time"
 )
 
 // VirtualMachineHostReconciler reconciles a VirtualMachineHost object
@@ -59,33 +59,33 @@ type Node struct {
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.19.0/pkg/reconcile
 func (r *VirtualMachineHostReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	logger = log.FromContext(ctx)
+	logger := log.FromContext(ctx)
 
 	url := "http://127.0.0.1:8000/v1/nodes"
 	resp, err := http.Get(url)
 	if err != nil {
-		logger.info("Failed to send request: %v", err)
+		logger.Info("Failed to send request: %v", err)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		logger.info("Request failed with status code: %d", resp.StatusCode)
+		logger.Info("Request failed with status code: %d", resp.StatusCode)
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		logger.info("Failed to read response body: %v", err)
+		logger.Info("Failed to read response body: %v", err)
 	}
 
 	var node Node // for single instance
 	if err := json.Unmarshal(body, &node); err != nil {
-		logger.info("Failed to unmarshal JSON response: %v", err)
+		logger.Info("Failed to unmarshal JSON response: %v", err)
 	}
 
 	now_status := node.State
 
 	if now_status != r.prev_status {
-		logger.info("Successful to find converted status into: %v", now_status)
+		logger.Info("Successful to find converted status into: %v", now_status)
 	}
 
 	// something logic (ex. re-inspection, re-scrap, and so on)
